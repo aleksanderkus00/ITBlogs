@@ -1,0 +1,23 @@
+@import "../../../variables";
+
+.navbar-wrapper {
+  background-color: $ashen-color;
+  height: $navbar-height;
+  width: $navbar-width;
+
+  .logo {
+    height: 100px;
+    width: 100px;
+    background-image: url("../../../assets/logo-small.png");
+    background-size: contain;
+  }
+
+  p {
+    font-size: 1.5rem;
+  }
+
+  a {
+    color: $text-black-color;
+    text-decoration: none;
+  }
+}

@@ -1,0 +1,29 @@
+@import "../../../variables";
+
+.post-wrapper {
+  background-color: $ashen-color;
+
+  .post-title {
+    font-size: 2rem;
+  }
+
+  .line {
+    height: 0.2rem;
+    width: 100%;
+    background-color: $grey;
+  }
+
+  .like-icon {
+    height: 30px;
+    width: 30px;
+    background-image: url("../../../assets/like.png");
+    background-size: contain;
+  }
+
+  .save-icon {
+    height: 30px;
+    width: 30px;
+    background-image: url("../../../assets/save.png");
+    background-size: contain;
+  }
+}

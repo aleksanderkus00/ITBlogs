@@ -1,0 +1,14 @@
+@import "../../../variables";
+
+.search-bar-wrapper {
+  height: $search-bar-height;
+  width: $search-bar-width;
+  background-color: $grey;
+
+  .search-icon {
+    width: 30px;
+    height: 30px;
+    background-image: url("../../../assets/search.png");
+    background-size: contain;
+  }
+}

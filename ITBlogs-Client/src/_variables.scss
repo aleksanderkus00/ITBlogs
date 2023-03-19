@@ -1,4 +1,14 @@
-$background-color: #001650;
+// colors
+$background-color: #be9f8d;
 $ashen-color: #d9d9d9;
 $grey: #b5b5b5;
-$pop-up-color: #5886fe;
+$pop-up-color: #8ab3a8;
+$text-black-color: #000000;
+
+// navbar variables
+$navbar-height: 100vh;
+$navbar-width: 10rem;
+
+// search bar variables
+$search-bar-height: 4rem;
+$search-bar-width: calc(100vw - $navbar-width);

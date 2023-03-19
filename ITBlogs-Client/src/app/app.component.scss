@@ -1,0 +1,8 @@
+@import "../variables";
+
+.main-page {
+  position: relative;
+  width: calc(100vw - $navbar-width);
+  height: calc(100vh - $search-bar-height);
+  background-color: $background-color;
+}
