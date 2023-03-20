@@ -1,0 +1,14 @@
+@import "../../../variables";
+
+.settings-wrapper {
+  background-color: $ashen-color;
+
+  .save-button {
+    color: $text-white-color;
+    background-color: $save-button-color;
+  }
+
+  .input-text-width {
+    width: 12rem;
+  }
+}
