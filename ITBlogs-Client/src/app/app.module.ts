@@ -16,6 +16,12 @@ import { NewsComponent } from './components/news/news.component';
 import { DiscoverComponent } from './components/discover/discover.component';
 import { SavedComponent } from './components/saved/saved.component';
 import { SettingsComponent } from './components/settings/settings.component';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { FormsModule } from '@angular/forms';
+import { SingInDialogComponent } from './components/dialogs/sing-in-dialog/sing-in-dialog.component';
+import { SingUpDialogComponent } from './components/dialogs/sing-up-dialog/sing-up-dialog.component';
+import { MatInputModule } from '@angular/material/input';
 
 export function tokenGetter() {
   return localStorage.getItem('access_token');
@@ -32,6 +38,8 @@ export function tokenGetter() {
     DiscoverComponent,
     SavedComponent,
     SettingsComponent,
+    SingInDialogComponent,
+    SingUpDialogComponent,
   ],
   imports: [
     BrowserModule,
@@ -39,6 +47,10 @@ export function tokenGetter() {
     BrowserAnimationsModule,
     MatButtonModule,
     ScrollingModule,
+    MatDialogModule,
+    MatFormFieldModule,
+    FormsModule,
+    MatInputModule,
     JwtModule.forRoot({
       config: {
         tokenGetter: tokenGetter,

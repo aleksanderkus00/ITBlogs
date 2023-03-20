@@ -27,10 +27,10 @@
 
   <div *ngIf="!userService.user">
     <div class="p-2">
-      <button mat-raised-button>Sign In</button>
+      <button mat-raised-button (click)="openDialogOnSignIn()">Sign In</button>
     </div>
     <div class="p-2">
-      <button mat-raised-button>Sign Up</button>
+      <button mat-raised-button (click)="openDialogOnSignUp()">Sign Up</button>
     </div>
   </div>
 </div>

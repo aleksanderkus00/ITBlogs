@@ -1,0 +1,37 @@
+<div class="p-4 dialog-wrapper">
+  <h1 mat-dialog-title>Sign Up</h1>
+  <div mat-dialog-content>
+    <p>What's your name?</p>
+    <mat-form-field appearance="fill">
+      <mat-label>username</mat-label>
+      <input matInput [(ngModel)]="data.username" />
+    </mat-form-field>
+    <p>What's your email?</p>
+    <mat-form-field appearance="fill">
+      <mat-label>email</mat-label>
+      <input matInput [(ngModel)]="data.email" />
+    </mat-form-field>
+    <p>What's your password?</p>
+    <mat-form-field appearance="fill">
+      <mat-label>password</mat-label>
+      <input matInput [(ngModel)]="data.password" />
+    </mat-form-field>
+    <p>Repeat your password?</p>
+    <mat-form-field appearance="fill">
+      <mat-label>password</mat-label>
+      <input matInput [(ngModel)]="data.repeatedPassword" />
+    </mat-form-field>
+  </div>
+  <div mat-dialog-actions>
+    <button mat-button (click)="onNoClick()">Cancel</button>
+    <button
+      mat-raised-button
+      color="primary"
+      [mat-dialog-close]="data"
+      cdkFocusInitial
+      class="ms-2"
+    >
+      Sign Up
+    </button>
+  </div>
+</div>
