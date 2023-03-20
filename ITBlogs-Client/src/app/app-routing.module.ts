@@ -6,6 +6,7 @@ import { DiscoverComponent } from './components/discover/discover.component';
 import { SettingsComponent } from './components/settings/settings.component';
 import { CreateArticleComponent } from './components/create-article/create-article.component';
 import { NotFoundComponent } from './components/errors/not-found/not-found.component';
+import { PostComponent } from './components/post/post.component';
 
 const routes: Routes = [
   {
@@ -14,6 +15,7 @@ const routes: Routes = [
     pathMatch: 'full',
   },
   { path: 'posts', component: PostsComponent },
+  { path: 'post/:id', component: PostComponent },
   { path: 'news', component: NewsComponent },
   { path: 'discover', component: DiscoverComponent },
   { path: 'saved', component: DiscoverComponent },

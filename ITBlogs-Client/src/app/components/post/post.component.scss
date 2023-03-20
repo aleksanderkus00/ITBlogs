@@ -5,6 +5,10 @@
 
   .post-title {
     font-size: 2rem;
+    a {
+      text-decoration: none;
+      color: $text-black-color;
+    }
   }
 
   .line {
