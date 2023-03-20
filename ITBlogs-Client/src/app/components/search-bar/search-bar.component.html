@@ -13,7 +13,7 @@
     />
   </div>
 
-  <div class="p-2">
+  <div class="p-2" *ngIf="userService.user">
     <button mat-raised-button>Create article</button>
   </div>
 </div>

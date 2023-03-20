@@ -13,20 +13,24 @@
     </li>
   </ul>
 
-  <p class="px-2 mt-4">Profile</p>
-  <ul class="nav flex-column">
-    <li class="nav-item">
-      <a class="nav-link" routerLink="/saved">Saved</a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link" routerLink="/settings">Settings</a>
-    </li>
-  </ul>
-
-  <div class="p-2">
-    <button mat-raised-button>Sign In</button>
+  <div *ngIf="userService.user">
+    <p class="px-2 mt-4">Profile</p>
+    <ul class="nav flex-column">
+      <li class="nav-item">
+        <a class="nav-link" routerLink="/saved">Saved</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" routerLink="/settings">Settings</a>
+      </li>
+    </ul>
   </div>
-  <div class="p-2">
-    <button mat-raised-button>Sign Up</button>
+
+  <div *ngIf="!userService.user">
+    <div class="p-2">
+      <button mat-raised-button>Sign In</button>
+    </div>
+    <div class="p-2">
+      <button mat-raised-button>Sign Up</button>
+    </div>
   </div>
 </div>
