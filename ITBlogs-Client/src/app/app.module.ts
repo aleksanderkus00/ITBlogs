@@ -22,6 +22,7 @@ import { FormsModule } from '@angular/forms';
 import { SingInDialogComponent } from './components/dialogs/sing-in-dialog/sing-in-dialog.component';
 import { SingUpDialogComponent } from './components/dialogs/sing-up-dialog/sing-up-dialog.component';
 import { MatInputModule } from '@angular/material/input';
+import { CreateArticleComponent } from './components/create-article/create-article.component';
 import { NotFoundComponent } from './components/errors/not-found/not-found.component';
 
 export function tokenGetter() {
@@ -41,6 +42,7 @@ export function tokenGetter() {
     SettingsComponent,
     SingInDialogComponent,
     SingUpDialogComponent,
+    CreateArticleComponent,
     NotFoundComponent,
   ],
   imports: [

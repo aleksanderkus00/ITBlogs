@@ -24,6 +24,7 @@ export class NavbarComponent {
 
     dialogRef.afterClosed().subscribe((result) => {
       this.loginCredentials = result;
+      this.userService.user = true;
     });
   }
 
@@ -35,5 +36,9 @@ export class NavbarComponent {
     dialogRef.afterClosed().subscribe((result) => {
       this.registerCredentials = result;
     });
+  }
+
+  logout() {
+    this.userService.user = false;
   }
 }

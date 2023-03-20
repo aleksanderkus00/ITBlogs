@@ -17,6 +17,9 @@
     <p class="px-2 mt-4">Profile</p>
     <ul class="nav flex-column">
       <li class="nav-item">
+        <a class="nav-link" routerLink="/">Your articles</a>
+      </li>
+      <li class="nav-item">
         <a class="nav-link" routerLink="/saved">Saved</a>
       </li>
       <li class="nav-item">
@@ -25,12 +28,24 @@
     </ul>
   </div>
 
+  <div *ngIf="userService.user">
+    <div class="p-2">
+      <button mat-raised-button class="shadow" (click)="logout()">
+        Log out
+      </button>
+    </div>
+  </div>
+
   <div *ngIf="!userService.user">
     <div class="p-2">
-      <button mat-raised-button (click)="openDialogOnSignIn()">Sign In</button>
+      <button mat-raised-button class="shadow" (click)="openDialogOnSignIn()">
+        Sign In
+      </button>
     </div>
     <div class="p-2">
-      <button mat-raised-button (click)="openDialogOnSignUp()">Sign Up</button>
+      <button mat-raised-button class="shadow" (click)="openDialogOnSignUp()">
+        Sign Up
+      </button>
     </div>
   </div>
 </div>
