@@ -8,9 +8,8 @@ describe('SingUpDialogComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ SingUpDialogComponent ]
-    })
-    .compileComponents();
+      declarations: [SingUpDialogComponent],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(SingUpDialogComponent);
     component = fixture.componentInstance;

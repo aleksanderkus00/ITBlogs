@@ -8,9 +8,8 @@ describe('NewsComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ NewsComponent ]
-    })
-    .compileComponents();
+      declarations: [NewsComponent],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(NewsComponent);
     component = fixture.componentInstance;

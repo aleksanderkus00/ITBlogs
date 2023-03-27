@@ -4,7 +4,9 @@ import { Injectable } from '@angular/core';
   providedIn: 'root',
 })
 export class UserService {
-  public user: boolean = true;
+  public user: boolean;
 
-  constructor() {}
+  constructor() {
+    this.user = true;
+  }
 }

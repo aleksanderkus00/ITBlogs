@@ -22,7 +22,7 @@ export class NavbarComponent {
       data: { email: '', password: '' },
     });
 
-    dialogRef.afterClosed().subscribe((result) => {
+    dialogRef.afterClosed().subscribe(result => {
       this.loginCredentials = result;
       this.userService.user = true;
     });
@@ -33,7 +33,7 @@ export class NavbarComponent {
       data: { username: '', email: '', password: '', repeatedPassword: '' },
     });
 
-    dialogRef.afterClosed().subscribe((result) => {
+    dialogRef.afterClosed().subscribe(result => {
       this.registerCredentials = result;
     });
   }
