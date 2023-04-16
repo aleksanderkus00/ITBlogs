@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,6 +42,16 @@ public class Article {
             nullable = false
     )
     private Boolean deleted;
+
+    @Column(
+            name="category"
+    )
+    private Long category;
+    @Column(
+            name="generatedDate",
+            nullable = false
+    )
+    private LocalDateTime generatedDate;
 
     @JsonIgnore
     @ToString.Exclude
