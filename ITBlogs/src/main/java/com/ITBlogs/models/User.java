@@ -4,11 +4,12 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.sql.Array;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.List;
 
-import static jakarta.persistence.CascadeType.ALL;
 
 @Data
 @Getter
@@ -43,15 +44,15 @@ public class User {
     @Column(
             name="passwordHash",
             nullable = false,
-            columnDefinition = "TEXT"
+            columnDefinition = "BYTEA"
     )
-    private String passwordHash;
+    private byte[] passwordHash;
     @Column(
             name="passwordSalt",
             nullable = false,
-            columnDefinition = "TEXT"
+            columnDefinition = "BYTEA"
     )
-    private String passwordSalt;
+    private byte[] passwordSalt;
     @Column(
             name="deleted",
             nullable = false
@@ -69,4 +70,19 @@ public class User {
     @ToString.Exclude
     @ManyToMany(mappedBy="savedArticles")
     private List<Article> savedArticles = new ArrayList<>();
+
+    public User(String username, String email, String password) throws NoSuchAlgorithmException {
+        this.id = 0L;
+        this.username = username;
+        this.email = email;
+        this.deleted = false;
+
+        SecureRandom random = new SecureRandom();
+        byte[] salt = new byte[16];
+        random.nextBytes(salt);
+        byte[] saltedPassword = (password + new String(salt)).getBytes();
+        MessageDigest md = MessageDigest.getInstance("SHA-256");
+        this.passwordHash  = md.digest(saltedPassword);
+        this.passwordSalt = salt;
+    }
 }
