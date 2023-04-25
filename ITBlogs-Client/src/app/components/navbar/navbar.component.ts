@@ -24,7 +24,11 @@ export class NavbarComponent {
 
     dialogRef.afterClosed().subscribe(result => {
       this.loginCredentials = result;
-      this.userService.user = true;
+      // TODO: validate credentials
+      if (typeof this.loginCredentials === 'undefined') return;
+      this.userService
+        .signIn(this.loginCredentials)
+        .subscribe(response => console.log(response));
     });
   }
 
@@ -35,6 +39,11 @@ export class NavbarComponent {
 
     dialogRef.afterClosed().subscribe(result => {
       this.registerCredentials = result;
+      // TODO: validate credentials
+      if (typeof this.registerCredentials === 'undefined') return;
+      this.userService
+        .signUp(this.registerCredentials)
+        .subscribe(response => console.log(response));
     });
   }
 
