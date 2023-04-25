@@ -1,17 +1,16 @@
 package com.ITBlogs.controllers;
 
 import com.ITBlogs.models.Article;
-import com.ITBlogs.models.PaginatedResult;
 import com.ITBlogs.repository.ArticleRepository;
 import com.ITBlogs.repository.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/article")
@@ -67,15 +66,29 @@ public class ArticleController {
 
     @GetMapping("/all-articles/{pageNumber}/{pageSize}")
     //PaginatedResult<List<Article>> getAllArticles(
-    List<Article> getAllArticles(
-            @PathVariable long pageNumber,
-            @PathVariable long pageSize)
-    {
-        var data =  this.articleRepository.findAll()
-                .stream()
-                .skip(pageNumber * pageSize)
-                .limit(pageSize)
-                .collect(Collectors.toList());
-        return data;
+    List<Article> getAllArticles(@PathVariable int pageNumber,@PathVariable int pageSize) {
+        var pageable = PageRequest.of(pageNumber, pageSize);
+        return this.articleRepository.findAll(pageable).getContent();
     }
+
+    @GetMapping("/liked/{userId}/{pageNumber}/{pageSize}")
+    List<Article> getLikedArticles(@PathVariable int userId, @PathVariable int pageNumber, @PathVariable int pageSize) {
+        return null;
+    }
+
+    @PostMapping("/like/{userId}/{articleId}")
+    boolean likeArticles(@PathVariable int userId, @PathVariable int articleId) {
+        return true;
+    }
+
+    @GetMapping("/saved/{userId}/{pageNumber}/{pageSize}")
+    List<Article> getSavedArticles(@PathVariable int userId, @PathVariable int pageNumber, @PathVariable int pageSize) {
+        return null;
+    }
+
+    @PostMapping("/save/{userId}/{articleId}")
+    boolean saveArticles(@PathVariable int userId, @PathVariable int articleId) {
+        return true;
+    }
+
 }
