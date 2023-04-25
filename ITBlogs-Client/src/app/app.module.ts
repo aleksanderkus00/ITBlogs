@@ -24,6 +24,9 @@ import { SingUpDialogComponent } from './components/dialogs/sing-up-dialog/sing-
 import { MatInputModule } from '@angular/material/input';
 import { CreateArticleComponent } from './components/create-article/create-article.component';
 import { NotFoundComponent } from './components/errors/not-found/not-found.component';
+import { HttpClientModule } from '@angular/common/http';
+import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
+import { PostDetailsComponent } from './components/post-details/post-details.component';
 
 export function tokenGetter() {
   return localStorage.getItem('access_token');
@@ -44,8 +47,11 @@ export function tokenGetter() {
     SingUpDialogComponent,
     CreateArticleComponent,
     NotFoundComponent,
+    PostDetailsComponent,
   ],
   imports: [
+    CKEditorModule,
+    HttpClientModule,
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
