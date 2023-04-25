@@ -1,5 +1,5 @@
 <cdk-virtual-scroll-viewport itemSize="50" class="viewport">
-  <div *cdkVirtualFor="let post of posts">
-    <app-post></app-post>
+  <div *cdkVirtualFor="let article of articles | async">
+    <app-post [article]="article"></app-post>
   </div>
 </cdk-virtual-scroll-viewport>
