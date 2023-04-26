@@ -1,5 +1,6 @@
 package com.ITBlogs.controllers;
 
+import com.ITBlogs.models.DTO.UserSettingsDto;
 import com.ITBlogs.models.LoginModel;
 import com.ITBlogs.models.RegisterModel;
 import com.ITBlogs.models.User;
@@ -10,6 +11,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 import java.util.NoSuchElementException;
 
@@ -66,17 +68,31 @@ public class UserController {
         }
     }
 
-    @PutMapping("/{id}")
-    User updateUserById(@RequestBody User updatedUser, @PathVariable long id) {
+    @PutMapping()
+    boolean updateUser(@RequestBody UserSettingsDto userSettings) {
         try {
-            var user = this.userRepository.findById(id).get();
-            user.setUsername(updatedUser.getUsername());
-            user.setEmail(updatedUser.getEmail());
-            this.userRepository.save(user);
-        } catch (NoSuchElementException exception){
-            this.logger.warn("Cannot update user with id: " + id);
+            var changed = false;
+            var user = this.userRepository.findById(userSettings.getId()).get();
+            if (userSettings.getUsername() != null){
+                user.setUsername(userSettings.getUsername());
+                changed = true;
+            }
+            if (userSettings.getEmail() != null) {
+                user.setEmail(userSettings.getEmail());
+                changed = true;
+            }
+            if (userSettings.getPassword() != null) {
+                byte[] saltedPassword = (userSettings.getPassword() + new String(user.getPasswordSalt())).getBytes();
+                MessageDigest md = MessageDigest.getInstance("SHA-256");
+                user.setPasswordHash(md.digest(saltedPassword));
+                changed = true;
+            }
+            if (changed) this.userRepository.save(user);
+            return true;
+        } catch (Exception exception){
+            this.logger.warn("Cannot update user with id: " + userSettings.getId());
         }
-        return null;
+        return false;
     }
 
     @DeleteMapping("/{id}")

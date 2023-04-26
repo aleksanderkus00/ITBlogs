@@ -4,6 +4,7 @@ import { RegisterModel } from '../models/register.moder';
 import { HttpClient } from '@angular/common/http';
 import { Observable, map } from 'rxjs';
 import { LoginModel } from '../models/login.model';
+import { UserSettings } from '../models/user.settings';
 
 @Injectable({
   providedIn: 'root',
@@ -52,5 +53,11 @@ export class UserService {
           return !!response;
         })
       );
+  }
+
+  public updateUser(userSettings: UserSettings): Observable<boolean> {
+    const data = JSON.stringify(userSettings);
+    const options = { headers: { 'Content-Type': 'application/json' } };
+    return this.http.put<boolean>(`${this.env.apiUrl}/user`, data, options);
   }
 }
