@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { RegisterModel } from '../models/register.moder';
 import { HttpClient } from '@angular/common/http';
-import { Observable, tap } from 'rxjs';
+import { Observable, map } from 'rxjs';
 import { LoginModel } from '../models/login.model';
 
 @Injectable({
@@ -10,10 +10,16 @@ import { LoginModel } from '../models/login.model';
 })
 export class UserService {
   private env = environment;
+  private userId: number;
   public user: boolean;
 
   constructor(private http: HttpClient) {
     this.user = true;
+    this.userId = 0;
+  }
+
+  public getUserId(): number {
+    return this.userId;
   }
 
   public signUp(registerModel: RegisterModel): Observable<boolean> {
@@ -24,15 +30,27 @@ export class UserService {
     });
     const options = { headers: { 'Content-Type': 'application/json' } };
     return this.http
-      .post<boolean>(`${this.env.apiUrl}/user/register`, data, options)
-      .pipe(tap(response => (this.user = response)));
+      .post<number>(`${this.env.apiUrl}/user/register`, data, options)
+      .pipe(
+        map(response => {
+          this.userId = response;
+          this.user = !!response;
+          return !!response;
+        })
+      );
   }
 
   public signIn(loginModel: LoginModel): Observable<boolean> {
     const data = JSON.stringify(loginModel);
     const options = { headers: { 'Content-Type': 'application/json' } };
     return this.http
-      .post<boolean>(`${this.env.apiUrl}/user/login`, data, options)
-      .pipe(tap(response => (this.user = response)));
+      .post<number>(`${this.env.apiUrl}/user/login`, data, options)
+      .pipe(
+        map(response => {
+          this.userId = response;
+          this.user = !!response;
+          return !!response;
+        })
+      );
   }
 }
