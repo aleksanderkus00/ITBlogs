@@ -1,0 +1,6 @@
+@import '../../../variables';
+
+.viewport {
+  height: calc(100vh - $search-bar-height);
+  width: calc(100vw - $navbar-width);
+}

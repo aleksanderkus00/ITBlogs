@@ -41,18 +41,19 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    boolean loginUser(@RequestBody LoginModel loginModel){
+    long loginUser(@RequestBody LoginModel loginModel){
         try {
             var user = this.userRepository.findByEmail(loginModel.getEmail());
             byte[] saltedPassword = (loginModel.getPassword() + new String(user.getPasswordSalt())).getBytes();
             MessageDigest md = MessageDigest.getInstance("SHA-256");
             var passwordHash = md.digest(saltedPassword);
-            return Arrays.equals(passwordHash, user.getPasswordHash());
+            if(Arrays.equals(passwordHash, user.getPasswordHash())) return user.getId();
+            return 0;
         }
         catch (Exception ex){
             this.logger.error("Cannot login user " + ex.getMessage());
         }
-        return false;
+        return 0;
     }
 
     @GetMapping("/{id}")

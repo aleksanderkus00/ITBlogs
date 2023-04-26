@@ -70,7 +70,7 @@ public class Article {
     @ManyToMany
     @JoinTable(
             name="likedArticles",
-            joinColumns = @JoinColumn(name="user_id"),
+            joinColumns = @JoinColumn(name="user_id"), // inverse those ids
             inverseJoinColumns = @JoinColumn(name="article_id")
     )
     private List<User> likedArticles = new ArrayList<>();
@@ -78,9 +78,16 @@ public class Article {
     @ManyToMany
     @JoinTable(
             name="savedArticles",
-            joinColumns = @JoinColumn(name="user_id"),
+            joinColumns = @JoinColumn(name="user_id"), // inverse those ids
             inverseJoinColumns = @JoinColumn(name="article_id")
     )
     private List<User> savedArticles = new ArrayList<>();
 
+    public void likedBy(User user){
+        this.likedArticles.add(user);
+    }
+
+    public void savedBy(User user) {
+        this.savedArticles.add(user);
+    }
 }

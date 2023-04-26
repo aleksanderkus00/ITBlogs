@@ -1,6 +1,7 @@
 package com.ITBlogs.controllers;
 
 import com.ITBlogs.models.Article;
+import com.ITBlogs.models.DTO.ArticleDto;
 import com.ITBlogs.repository.ArticleRepository;
 import com.ITBlogs.repository.UserRepository;
 import org.slf4j.Logger;
@@ -9,6 +10,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -26,16 +28,19 @@ public class ArticleController {
     }
 
     @PostMapping("/{userId}")
-    Article createArticle(@RequestBody Article article, @PathVariable long userId) {
+    boolean createArticle(@RequestBody Article article, @PathVariable long userId) {
         try {
             var user = this.userRepository.findById(userId).get();
             article.setUser(user);
             article.setGeneratedDate(LocalDateTime.now());
-            return this.articleRepository.save(article);
+            article.setDeleted(false);
+            article.setCategory(1L); //test only
+            this.articleRepository.save(article);
+            return true;
         } catch (Exception exception) {
             this.logger.error(exception.getMessage());
         }
-        return null;
+        return false;
     }
 
     @GetMapping("/{id}")
@@ -66,29 +71,71 @@ public class ArticleController {
 
     @GetMapping("/all-articles/{pageNumber}/{pageSize}")
     //PaginatedResult<List<Article>> getAllArticles(
-    List<Article> getAllArticles(@PathVariable int pageNumber,@PathVariable int pageSize) {
+    List<ArticleDto> getAllArticles(@PathVariable int pageNumber, @PathVariable int pageSize) {
         var pageable = PageRequest.of(pageNumber, pageSize);
-        return this.articleRepository.findAll(pageable).getContent();
+        var articles =  this.articleRepository.findAll(pageable).getContent();
+        var articleDtos = new ArrayList<ArticleDto>(articles.size());
+        for(var article: articles){
+            var articleDto = new ArticleDto();
+            articleDto.setId(article.getId());
+            articleDto.setTitle(article.getTitle());
+            articleDto.setCategory(article.getCategory());
+            articleDto.setContent(article.getContent());
+            articleDto.setGeneratedDate(article.getGeneratedDate());
+            articleDto.setLikes((long) article.getLikedArticles().size());
+            articleDtos.add(articleDto);
+        }
+        return articleDtos;
     }
 
     @GetMapping("/liked/{userId}/{pageNumber}/{pageSize}")
-    List<Article> getLikedArticles(@PathVariable int userId, @PathVariable int pageNumber, @PathVariable int pageSize) {
+    List<Article> getLikedArticles(@PathVariable long userId, @PathVariable int pageNumber, @PathVariable int pageSize) {
+        try{
+            var user = this.userRepository.findById(userId).get();
+            return user.getLikedArticles();
+        } catch (NoSuchElementException exception) {
+            this.logger.warn("Cannot get saved articles");
+        }
         return null;
     }
 
-    @PostMapping("/like/{userId}/{articleId}")
-    boolean likeArticles(@PathVariable int userId, @PathVariable int articleId) {
-        return true;
+    @PutMapping("/like/{userId}/{articleId}")
+    boolean likeArticles(@PathVariable long userId, @PathVariable long articleId) {
+        try {
+            var user = this.userRepository.findById(userId).get();
+            var article = this.articleRepository.findById(articleId).get();
+            article.likedBy(user);
+            this.articleRepository.save(article);
+            return true;
+        } catch (NoSuchElementException exception) {
+            this.logger.warn("Cannot like article with id: " + articleId + " for user with id: " + userId);
+        }
+        return false;
     }
 
     @GetMapping("/saved/{userId}/{pageNumber}/{pageSize}")
-    List<Article> getSavedArticles(@PathVariable int userId, @PathVariable int pageNumber, @PathVariable int pageSize) {
+    List<Article> getSavedArticles(@PathVariable long userId, @PathVariable int pageNumber, @PathVariable int pageSize) {
+        try{
+            var user = this.userRepository.findById(userId).get();
+            return user.getSavedArticles();
+        } catch (NoSuchElementException exception) {
+            this.logger.warn("Cannot get saved articles");
+        }
         return null;
     }
 
-    @PostMapping("/save/{userId}/{articleId}")
-    boolean saveArticles(@PathVariable int userId, @PathVariable int articleId) {
-        return true;
+    @PutMapping("/save/{userId}/{articleId}")
+    boolean saveArticles(@PathVariable long userId, @PathVariable long articleId) {
+        try {
+            var user = this.userRepository.findById(userId).get();
+            var article = this.articleRepository.findById(articleId).get();
+            article.savedBy(user);
+            this.articleRepository.save(article);
+            return true;
+        } catch (NoSuchElementException exception) {
+            this.logger.warn("Cannot like article with id: " + articleId + " for user with id: " + userId);
+        }
+        return false;
     }
 
 }

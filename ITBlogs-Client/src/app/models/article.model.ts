@@ -5,5 +5,5 @@ export interface Article {
   category?: number;
   generatedTime?: Date;
   likes?: number;
-  saved?: number;
+  // photos?: Photo[];
 }
