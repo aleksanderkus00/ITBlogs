@@ -1,4 +1,4 @@
-@import "../../../variables";
+@import '../../../variables';
 
 .post-wrapper {
   background-color: $ashen-color;
@@ -20,14 +20,28 @@
   .like-icon {
     height: 30px;
     width: 30px;
-    background-image: url("../../../assets/like.png");
+    background-image: url('../../../assets/like.png');
+    background-size: contain;
+  }
+
+  .liked-icon {
+    height: 30px;
+    width: 30px;
+    background-image: url('../../../assets/liked.png');
     background-size: contain;
   }
 
   .save-icon {
     height: 30px;
     width: 30px;
-    background-image: url("../../../assets/save.png");
+    background-image: url('../../../assets/save.png');
+    background-size: contain;
+  }
+
+  .saved-icon {
+    height: 30px;
+    width: 30px;
+    background-image: url('../../../assets/saved.png');
     background-size: contain;
   }
 }
