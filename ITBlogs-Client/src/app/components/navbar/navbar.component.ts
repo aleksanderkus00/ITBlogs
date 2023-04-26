@@ -5,6 +5,7 @@ import { SingInDialogComponent } from '../dialogs/sing-in-dialog/sing-in-dialog.
 import { SingUpDialogComponent } from '../dialogs/sing-up-dialog/sing-up-dialog.component';
 import { LoginModel } from 'src/app/models/login.model';
 import { RegisterModel } from 'src/app/models/register.moder';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-navbar',
@@ -15,7 +16,15 @@ export class NavbarComponent {
   loginCredentials: LoginModel | undefined;
   registerCredentials: RegisterModel | undefined;
 
-  constructor(public userService: UserService, public dialog: MatDialog) {}
+  constructor(
+    public userService: UserService,
+    public dialog: MatDialog,
+    private router: Router
+  ) {}
+
+  goHome() {
+    this.router.navigate(['/']);
+  }
 
   openDialogOnSignIn(): void {
     const dialogRef = this.dialog.open(SingInDialogComponent, {
