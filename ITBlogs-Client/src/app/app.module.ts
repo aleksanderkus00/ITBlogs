@@ -27,6 +27,8 @@ import { NotFoundComponent } from './components/errors/not-found/not-found.compo
 import { HttpClientModule } from '@angular/common/http';
 import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
 import { PostDetailsComponent } from './components/post-details/post-details.component';
+import { ToastrModule } from 'ngx-toastr';
+import { YourArticlesComponent } from './components/your-articles/your-articles.component';
 
 export function tokenGetter() {
   return localStorage.getItem('access_token');
@@ -48,6 +50,7 @@ export function tokenGetter() {
     CreateArticleComponent,
     NotFoundComponent,
     PostDetailsComponent,
+    YourArticlesComponent,
   ],
   imports: [
     CKEditorModule,
@@ -61,6 +64,7 @@ export function tokenGetter() {
     MatFormFieldModule,
     FormsModule,
     MatInputModule,
+    ToastrModule.forRoot(),
     JwtModule.forRoot({
       config: {
         tokenGetter: tokenGetter,

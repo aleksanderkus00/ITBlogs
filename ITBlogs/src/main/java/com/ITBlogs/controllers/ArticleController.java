@@ -80,12 +80,63 @@ public class ArticleController {
             articleDto.setId(article.getId());
             articleDto.setTitle(article.getTitle());
             articleDto.setCategory(article.getCategory());
-            articleDto.setContent(article.getContent());
+            articleDto.setContent(article.getContent()); // TODO: take only first 100 characters
             articleDto.setGeneratedDate(article.getGeneratedDate());
             articleDto.setLikes((long) article.getLikedArticles().size());
             articleDtos.add(articleDto);
         }
         return articleDtos;
+    }
+
+    @GetMapping("your-articles/{userId}/{pageNumber}/{pageSize}")
+        //PaginatedResult<List<Article>> getAllArticles(
+    List<ArticleDto> getYourArticles(@PathVariable Long userId, @PathVariable int pageNumber, @PathVariable int pageSize) {
+        try {
+            var user = this.userRepository.findById(userId).get();
+            var pageable = PageRequest.of(pageNumber, pageSize);
+            var articles =  this.articleRepository.findAllByUser(user, pageable);
+            var articleDtos = new ArrayList<ArticleDto>(articles.size());
+            for(var article: articles){
+                var articleDto = new ArticleDto();
+                articleDto.setId(article.getId());
+                articleDto.setTitle(article.getTitle());
+                articleDto.setCategory(article.getCategory());
+                articleDto.setContent(article.getContent()); // TODO: take only first 100 characters
+                articleDto.setGeneratedDate(article.getGeneratedDate());
+                articleDto.setLikes((long) article.getLikedArticles().size());
+                articleDtos.add(articleDto);
+            }
+            return articleDtos;
+        }
+        catch (Exception ex){
+            this.logger.warn("Cannot get news articles");
+        }
+        return new ArrayList<>();
+    }
+
+    @GetMapping("/news-articles/{pageNumber}/{pageSize}")
+        //PaginatedResult<List<Article>> getAllArticles(
+    List<ArticleDto> getNewArticles(@PathVariable int pageNumber, @PathVariable int pageSize) {
+        try {
+            var pageable = PageRequest.of(pageNumber, pageSize);
+            var articles =  this.articleRepository.findAllByCategory(0L,pageable);
+            var articleDtos = new ArrayList<ArticleDto>(articles.size());
+            for(var article: articles){
+                var articleDto = new ArticleDto();
+                articleDto.setId(article.getId());
+                articleDto.setTitle(article.getTitle());
+                articleDto.setCategory(article.getCategory());
+                articleDto.setContent(article.getContent()); // TODO: take only first 100 characters
+                articleDto.setGeneratedDate(article.getGeneratedDate());
+                articleDto.setLikes((long) article.getLikedArticles().size());
+                articleDtos.add(articleDto);
+            }
+            return articleDtos;
+        }
+        catch (Exception ex){
+            this.logger.warn("Cannot get news articles");
+        }
+        return new ArrayList<>();
     }
 
     @GetMapping("/liked/{userId}/{pageNumber}/{pageSize}")

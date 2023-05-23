@@ -5,6 +5,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable, map } from 'rxjs';
 import { LoginModel } from '../models/login.model';
 import { UserSettings } from '../models/user.settings';
+import { ToastrService } from 'ngx-toastr';
 
 @Injectable({
   providedIn: 'root',
@@ -14,9 +15,9 @@ export class UserService {
   private userId: number;
   public user: boolean;
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private tostrService: ToastrService) {
     this.user = true;
-    this.userId = 0;
+    this.userId = 652; //! TODO: set back id to 0;
   }
 
   public getUserId(): number {

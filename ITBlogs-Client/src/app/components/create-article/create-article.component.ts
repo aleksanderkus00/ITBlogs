@@ -10,7 +10,7 @@ import { UserService } from 'src/app/services/user.service';
   styleUrls: ['./create-article.component.scss'],
 })
 export class CreateArticleComponent {
-  article: Article = {};
+  article: Article = { likes: 0 };
   public Editor = ClassicEditor;
 
   constructor(

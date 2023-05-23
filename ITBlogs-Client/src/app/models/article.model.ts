@@ -4,6 +4,6 @@ export interface Article {
   content?: string;
   category?: number;
   generatedTime?: Date;
-  likes?: number;
+  likes: number;
   // photos?: Photo[];
 }

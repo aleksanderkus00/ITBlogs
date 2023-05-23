@@ -8,6 +8,7 @@ import { CreateArticleComponent } from './components/create-article/create-artic
 import { NotFoundComponent } from './components/errors/not-found/not-found.component';
 import { PostDetailsComponent } from './components/post-details/post-details.component';
 import { SavedComponent } from './components/saved/saved.component';
+import { YourArticlesComponent } from './components/your-articles/your-articles.component';
 
 const routes: Routes = [
   {
@@ -19,6 +20,7 @@ const routes: Routes = [
   { path: 'post-details/:id', component: PostDetailsComponent },
   { path: 'news', component: NewsComponent },
   { path: 'discover', component: DiscoverComponent },
+  { path: 'your-articles', component: YourArticlesComponent },
   { path: 'saved', component: SavedComponent },
   { path: 'settings', component: SettingsComponent },
   { path: 'create-article', component: CreateArticleComponent },

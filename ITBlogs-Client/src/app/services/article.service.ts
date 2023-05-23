@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Article } from '../models/article.model';
 import { environment } from 'src/environments/environment';
+import { UserService } from './user.service';
 
 @Injectable({
   providedIn: 'root',
@@ -10,7 +11,7 @@ import { environment } from 'src/environments/environment';
 export class ArticleService {
   private env = environment;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private userService: UserService) {}
 
   public getArticleById(id: number): Observable<Article> {
     return this.http.get<Article>(`${this.env.apiUrl}/article/${id}`);
@@ -19,6 +20,25 @@ export class ArticleService {
   public getAllArticles(pageNumber = 0, pageSize = 100): Observable<Article[]> {
     return this.http.get<Article[]>(
       `${this.env.apiUrl}/article/all-articles/${pageNumber}/${pageSize}`
+    );
+  }
+
+  public getYourArticles(
+    pageNumber = 0,
+    pageSize = 100
+  ): Observable<Article[]> {
+    const userId = this.userService.getUserId();
+    return this.http.get<Article[]>(
+      `${this.env.apiUrl}/article/your-articles/${userId}/${pageNumber}/${pageSize}`
+    );
+  }
+
+  public getNewsArticles(
+    pageNumber = 0,
+    pageSize = 100
+  ): Observable<Article[]> {
+    return this.http.get<Article[]>(
+      `${this.env.apiUrl}/article/news-articles/${pageNumber}/${pageSize}`
     );
   }
 
