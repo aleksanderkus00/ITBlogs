@@ -1,5 +1,6 @@
 package com.ITBlogs.models;
 
+import com.ITBlogs.models.Enum.ERole;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
@@ -8,7 +9,9 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 
 @Data
@@ -42,22 +45,28 @@ public class User {
     )
     private String email;
     @Column(
-            name="passwordHash",
+            name="password",
             nullable = false,
-            columnDefinition = "BYTEA"
+            columnDefinition = "TEXT"
     )
-    private byte[] passwordHash;
-    @Column(
-            name="passwordSalt",
-            nullable = false,
-            columnDefinition = "BYTEA"
-    )
-    private byte[] passwordSalt;
+    private String password;
     @Column(
             name="deleted",
             nullable = false
     )
     private Boolean deleted;
+
+    @Column(
+            name="deleted",
+            nullable = false
+    )
+
+    @ManyToMany(fetch=FetchType.EAGER)
+    @JoinTable(name="userRoles",
+            joinColumns = @JoinColumn(name="iduser"),
+            inverseJoinColumns = @JoinColumn(name="idrole"))
+    private Set<Role> roles = new HashSet<>();
+
     @JsonIgnore
     @ToString.Exclude
     @OneToMany(mappedBy="user")
@@ -76,13 +85,6 @@ public class User {
         this.username = username;
         this.email = email;
         this.deleted = false;
-
-        SecureRandom random = new SecureRandom();
-        byte[] salt = new byte[16];
-        random.nextBytes(salt);
-        byte[] saltedPassword = (password + new String(salt)).getBytes();
-        MessageDigest md = MessageDigest.getInstance("SHA-256");
-        this.passwordHash  = md.digest(saltedPassword);
-        this.passwordSalt = salt;
+        this.password = password;
     }
 }
