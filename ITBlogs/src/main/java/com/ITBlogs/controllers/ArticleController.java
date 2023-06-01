@@ -13,6 +13,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/article")
@@ -150,6 +151,17 @@ public class ArticleController {
         return null;
     }
 
+    @GetMapping("/userLikes/{userId}")
+    List<Long> getUserLikes(@PathVariable long userId) {
+        try{
+            var user = this.userRepository.findById(userId).get();
+            return user.getLikedArticles().stream().map(Article::getId).collect(Collectors.toList());
+        } catch (NoSuchElementException exception) {
+            this.logger.warn("Cannot get saved articles");
+        }
+        return new ArrayList<>();
+    }
+
     @PutMapping("/like/{userId}/{articleId}")
     boolean likeArticles(@PathVariable long userId, @PathVariable long articleId) {
         try {
@@ -188,5 +200,4 @@ public class ArticleController {
         }
         return false;
     }
-
 }

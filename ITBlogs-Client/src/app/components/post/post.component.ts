@@ -18,6 +18,10 @@ export class PostComponent {
     private tostrService: ToastrService
   ) {}
 
+  isLiked(): boolean {
+    return this.userService.isArticleLiked(this.article.id);
+  }
+
   likeArticle = (): void => {
     if (this.article == undefined || this.article.id == undefined) return;
     this.articleService

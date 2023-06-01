@@ -17,6 +17,7 @@ export class UserService {
   private userId = 0;
   public user = false;
   public userRoles: string[] = [];
+  private likedArticlesIds: number[] = [];
 
   constructor(
     private http: HttpClient,
@@ -27,9 +28,13 @@ export class UserService {
       this.user = true;
       this.userId = this.getUserIdFromLocalStorage();
     }
+    this.setLikedArticlesIds();
   }
 
   public getUserId(): number {
+    if (this.userId == null) {
+      this.userId = this.getUserIdFromLocalStorage();
+    }
     return this.userId;
   }
 
@@ -83,11 +88,24 @@ export class UserService {
     this.user = false;
   }
 
+  public isArticleLiked(articleId: number | undefined): boolean {
+    if (articleId == undefined) return false;
+    return this.likedArticlesIds.includes(articleId);
+  }
+
   private getUserIdFromLocalStorage(): number {
     return Number(localStorage.getItem('user_id'));
   }
 
   private setUserIdToLocalStorage(userId: number): void {
     localStorage.setItem('user_id', String(userId));
+  }
+
+  private setLikedArticlesIds(): void {
+    this.http
+      .get<number[]>(`${this.env.apiUrl}/article/userLikes/${this.getUserId()}`)
+      .subscribe(res => {
+        this.likedArticlesIds = res;
+      });
   }
 }

@@ -14,7 +14,8 @@
       <div class="d-flex justify-content-center">
         <div class="d-flex flex-row align-items-center like-section">
           <button class="btn" (click)="likeArticle()">
-            <div class="like-icon"></div>
+            <div *ngIf="!isLiked()" class="like-icon"></div>
+            <div *ngIf="isLiked()" class="liked-icon"></div>
           </button>
           <p class="p-0 m-0">
             {{ article.likes === undefined ? 0 : article.likes }}
