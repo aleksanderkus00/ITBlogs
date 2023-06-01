@@ -9,6 +9,7 @@ import { NotFoundComponent } from './components/errors/not-found/not-found.compo
 import { PostDetailsComponent } from './components/post-details/post-details.component';
 import { SavedComponent } from './components/saved/saved.component';
 import { YourArticlesComponent } from './components/your-articles/your-articles.component';
+import { authGuard } from './guard/auth.guard';
 
 const routes: Routes = [
   {
@@ -17,13 +18,24 @@ const routes: Routes = [
     pathMatch: 'full',
   },
   { path: 'posts', component: PostsComponent },
-  { path: 'post-details/:id', component: PostDetailsComponent },
+  {
+    path: 'post-details/:id',
+    component: PostDetailsComponent,
+  },
   { path: 'news', component: NewsComponent },
   { path: 'discover', component: DiscoverComponent },
-  { path: 'your-articles', component: YourArticlesComponent },
-  { path: 'saved', component: SavedComponent },
-  { path: 'settings', component: SettingsComponent },
-  { path: 'create-article', component: CreateArticleComponent },
+  {
+    path: 'your-articles',
+    component: YourArticlesComponent,
+    canActivate: [authGuard],
+  },
+  { path: 'saved', component: SavedComponent, canActivate: [authGuard] },
+  { path: 'settings', component: SettingsComponent, canActivate: [authGuard] },
+  {
+    path: 'create-article',
+    component: CreateArticleComponent,
+    canActivate: [authGuard],
+  },
   { path: '**', component: NotFoundComponent, pathMatch: 'full' },
 ];
 

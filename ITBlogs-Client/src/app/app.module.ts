@@ -69,7 +69,7 @@ export function tokenGetter() {
       config: {
         tokenGetter: tokenGetter,
         allowedDomains: [environment.allowedDomains],
-        disallowedRoutes: [''],
+        disallowedRoutes: [],
       },
     }),
   ],

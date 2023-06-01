@@ -1,6 +1,7 @@
 import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { LoginModel } from 'src/app/models/login.model';
+import { UserService } from 'src/app/services/user.service';
 
 @Component({
   selector: 'app-sing-in-dialog',
@@ -9,11 +10,19 @@ import { LoginModel } from 'src/app/models/login.model';
 })
 export class SingInDialogComponent {
   constructor(
+    private userService: UserService,
     public dialogRef: MatDialogRef<SingInDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: LoginModel
   ) {}
 
   onNoClick(): void {
+    this.dialogRef
+      .afterClosed()
+      .subscribe(res =>
+        this.userService
+          .signIn({ email: res.email, password: res.password } as LoginModel)
+          .subscribe()
+      );
     this.dialogRef.close();
   }
 }
