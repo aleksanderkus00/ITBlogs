@@ -22,25 +22,63 @@ export class PostComponent {
     return this.userService.isArticleLiked(this.article.id);
   }
 
-  likeArticle = (): void => {
-    if (this.article == undefined || this.article.id == undefined) return;
-    this.articleService
-      .likeArticle(this.article?.id, this.userService.getUserId())
-      .subscribe(res => {
-        if (res) {
-          this.tostrService.success('Liked successfully!');
-          this.article.likes = this.article?.likes + 1 || 1;
-        } else this.tostrService.error('Something went wrong...');
-      });
-  };
+  isSaved(): boolean {
+    return this.userService.isArticleSaved(this.article.id);
+  }
 
-  saveArticle = (): void => {
+  likeArticle(): void {
     if (this.article == undefined || this.article.id == undefined) return;
-    this.articleService
-      .saveArticle(this.article.id, this.userService.getUserId())
-      .subscribe(res => {
-        if (res) this.tostrService.success('Saved successfully!');
-        else this.tostrService.error('Something went wrong...');
-      });
-  };
+    if (!this.userService.isArticleLiked(this.article.id)) {
+      this.articleService
+        .likeArticle(this.article?.id, this.userService.getUserId())
+        .subscribe({
+          next: res => {
+            if (res) {
+              this.tostrService.success('Liked successfully!');
+              this.article.likes = this.article?.likes + 1 || 1;
+            } else this.tostrService.error('Something went wrong...');
+          },
+          complete: () => window.location.reload(),
+        });
+    } else {
+      if (this.userService.isArticleLiked(this.article.id)) {
+        this.articleService
+          .unlikeArticle(this.article?.id, this.userService.getUserId())
+          .subscribe({
+            next: res => {
+              if (res) {
+                this.tostrService.success('UnLiked successfully!');
+                this.article.likes = this.article?.likes - 1 || 1;
+              } else this.tostrService.error('Something went wrong...');
+            },
+            complete: () => window.location.reload(),
+          });
+      }
+    }
+  }
+
+  saveArticle(): void {
+    if (this.article == undefined || this.article.id == undefined) return;
+    if (!this.userService.isArticleSaved(this.article.id)) {
+      this.articleService
+        .saveArticle(this.article.id, this.userService.getUserId())
+        .subscribe({
+          next: res => {
+            if (res) this.tostrService.success('Saved successfully!');
+            else this.tostrService.error('Something went wrong...');
+          },
+          complete: () => window.location.reload(),
+        });
+    } else {
+      this.articleService
+        .unsaveArticle(this.article.id, this.userService.getUserId())
+        .subscribe({
+          next: res => {
+            if (res) this.tostrService.success('Unsaved successfully!');
+            else this.tostrService.error('Something went wrong...');
+          },
+          complete: () => window.location.reload(),
+        });
+    }
+  }
 }

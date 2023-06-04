@@ -87,7 +87,15 @@ public class Article {
         this.likedArticles.add(user);
     }
 
+    public void unlikedBy(User user){
+        this.likedArticles.remove(user);
+    }
+
     public void savedBy(User user) {
         this.savedArticles.add(user);
+    }
+
+    public void unsavedBy(User user) {
+        this.savedArticles.remove(user);
     }
 }

@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { Article } from '../models/article.model';
 import { environment } from 'src/environments/environment';
 import { UserService } from './user.service';
@@ -59,6 +59,13 @@ export class ArticleService {
     );
   }
 
+  public unlikeArticle(articleId: number, userId: number): Observable<boolean> {
+    return this.http.put<boolean>(
+      `${this.env.apiUrl}/article/unlike/${userId}/${articleId}`,
+      ''
+    );
+  }
+
   public getLikedArticles(
     userId: number,
     pageNumber = 0,
@@ -72,6 +79,13 @@ export class ArticleService {
   public saveArticle(articleId: number, userId: number): Observable<boolean> {
     return this.http.put<boolean>(
       `${this.env.apiUrl}/article/save/${userId}/${articleId}`,
+      ''
+    );
+  }
+
+  public unsaveArticle(articleId: number, userId: number): Observable<boolean> {
+    return this.http.put<boolean>(
+      `${this.env.apiUrl}/article/unsave/${userId}/${articleId}`,
       ''
     );
   }

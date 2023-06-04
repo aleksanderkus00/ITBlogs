@@ -162,12 +162,37 @@ public class ArticleController {
         return new ArrayList<>();
     }
 
+    @GetMapping("/userSaves/{userId}")
+    List<Long> getUserSaves(@PathVariable long userId) {
+        try{
+            var user = this.userRepository.findById(userId).get();
+            return user.getSavedArticles().stream().map(Article::getId).collect(Collectors.toList());
+        } catch (NoSuchElementException exception) {
+            this.logger.warn("Cannot get saved articles");
+        }
+        return new ArrayList<>();
+    }
+
     @PutMapping("/like/{userId}/{articleId}")
     boolean likeArticles(@PathVariable long userId, @PathVariable long articleId) {
         try {
             var user = this.userRepository.findById(userId).get();
             var article = this.articleRepository.findById(articleId).get();
             article.likedBy(user);
+            this.articleRepository.save(article);
+            return true;
+        } catch (NoSuchElementException exception) {
+            this.logger.warn("Cannot like article with id: " + articleId + " for user with id: " + userId);
+        }
+        return false;
+    }
+
+    @PutMapping("/unlike/{userId}/{articleId}")
+    boolean unlikeArticles(@PathVariable long userId, @PathVariable long articleId) {
+        try {
+            var user = this.userRepository.findById(userId).get();
+            var article = this.articleRepository.findById(articleId).get();
+            article.unlikedBy(user);
             this.articleRepository.save(article);
             return true;
         } catch (NoSuchElementException exception) {
@@ -193,6 +218,20 @@ public class ArticleController {
             var user = this.userRepository.findById(userId).get();
             var article = this.articleRepository.findById(articleId).get();
             article.savedBy(user);
+            this.articleRepository.save(article);
+            return true;
+        } catch (NoSuchElementException exception) {
+            this.logger.warn("Cannot like article with id: " + articleId + " for user with id: " + userId);
+        }
+        return false;
+    }
+
+    @PutMapping("/unsave/{userId}/{articleId}")
+    boolean unSaveArticles(@PathVariable long userId, @PathVariable long articleId) {
+        try {
+            var user = this.userRepository.findById(userId).get();
+            var article = this.articleRepository.findById(articleId).get();
+            article.unsavedBy(user);
             this.articleRepository.save(article);
             return true;
         } catch (NoSuchElementException exception) {
