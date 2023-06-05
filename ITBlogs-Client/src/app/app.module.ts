@@ -29,6 +29,7 @@ import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
 import { PostDetailsComponent } from './components/post-details/post-details.component';
 import { ToastrModule } from 'ngx-toastr';
 import { YourArticlesComponent } from './components/your-articles/your-articles.component';
+import { MatSelectModule } from '@angular/material/select';
 
 export function tokenGetter() {
   return localStorage.getItem('access_token');
@@ -62,6 +63,7 @@ export function tokenGetter() {
     ScrollingModule,
     MatDialogModule,
     MatFormFieldModule,
+    MatSelectModule,
     FormsModule,
     MatInputModule,
     ToastrModule.forRoot(),
