@@ -6,7 +6,10 @@ import { DiscoverComponent } from './components/discover/discover.component';
 import { SettingsComponent } from './components/settings/settings.component';
 import { CreateArticleComponent } from './components/create-article/create-article.component';
 import { NotFoundComponent } from './components/errors/not-found/not-found.component';
-import { PostComponent } from './components/post/post.component';
+import { PostDetailsComponent } from './components/post-details/post-details.component';
+import { SavedComponent } from './components/saved/saved.component';
+import { YourArticlesComponent } from './components/your-articles/your-articles.component';
+import { authGuard } from './guard/auth.guard';
 
 const routes: Routes = [
   {
@@ -15,12 +18,24 @@ const routes: Routes = [
     pathMatch: 'full',
   },
   { path: 'posts', component: PostsComponent },
-  { path: 'post/:id', component: PostComponent },
+  {
+    path: 'post-details/:id',
+    component: PostDetailsComponent,
+  },
   { path: 'news', component: NewsComponent },
   { path: 'discover', component: DiscoverComponent },
-  { path: 'saved', component: DiscoverComponent },
-  { path: 'settings', component: SettingsComponent },
-  { path: 'create-article', component: CreateArticleComponent },
+  {
+    path: 'your-articles',
+    component: YourArticlesComponent,
+    canActivate: [authGuard],
+  },
+  { path: 'saved', component: SavedComponent, canActivate: [authGuard] },
+  { path: 'settings', component: SettingsComponent, canActivate: [authGuard] },
+  {
+    path: 'create-article',
+    component: CreateArticleComponent,
+    canActivate: [authGuard],
+  },
   { path: '**', component: NotFoundComponent, pathMatch: 'full' },
 ];
 

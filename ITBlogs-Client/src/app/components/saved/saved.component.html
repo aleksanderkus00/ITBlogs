@@ -1,3 +1,5 @@
-<div class="container">
-  <p>saved works!</p>
-</div>
+<cdk-virtual-scroll-viewport itemSize="50" class="viewport">
+  <div *cdkVirtualFor="let article of articles | async; trackBy: trackByIdx">
+    <app-post [article]="article"></app-post>
+  </div>
+</cdk-virtual-scroll-viewport>

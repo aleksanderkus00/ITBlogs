@@ -1,3 +1,26 @@
-<div class="container">
-  <p>create-article works!</p>
+<div class="container p-2">
+  <div class="input-group mb-3">
+    <div class="input-group-prepend">
+      <span class="input-group-text" id="basic-addon1">Title</span>
+    </div>
+    <input
+      [(ngModel)]="article.title"
+      type="text"
+      class="form-control"
+      placeholder="Title"
+      aria-label="Title"
+      aria-describedby="basic-addon1" />
+  </div>
+  <mat-form-field>
+    <mat-label>Tag</mat-label>
+    <mat-select [(value)]="selectedValue">
+      <mat-option *ngFor="let tag of tags" [value]="tag.value">
+        {{ tag.name }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+  <div class="pb-3">
+    <ckeditor [editor]="Editor" [(ngModel)]="article.content"></ckeditor>
+  </div>
+  <button mat-raised-button class="shadow" (click)="save()">Save</button>
 </div>
