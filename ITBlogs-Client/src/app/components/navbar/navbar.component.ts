@@ -76,5 +76,6 @@ export class NavbarComponent {
 
   logout() {
     this.userService.logout();
+    window.location.reload();
   }
 }
