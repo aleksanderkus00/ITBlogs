@@ -6,6 +6,7 @@ import { SingUpDialogComponent } from '../dialogs/sing-up-dialog/sing-up-dialog.
 import { LoginModel } from 'src/app/models/login.model';
 import { RegisterModel } from 'src/app/models/register.moder';
 import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-navbar',
@@ -19,7 +20,8 @@ export class NavbarComponent {
   constructor(
     public userService: UserService,
     public dialog: MatDialog,
-    private router: Router
+    private router: Router,
+    private toatrService: ToastrService
   ) {}
 
   goHome() {
@@ -33,11 +35,19 @@ export class NavbarComponent {
 
     dialogRef.afterClosed().subscribe(result => {
       this.loginCredentials = result;
-      // TODO: validate credentials
-      if (typeof this.loginCredentials === 'undefined') return;
-      this.userService
-        .signIn(this.loginCredentials)
-        .subscribe(response => console.log(response));
+      if (
+        this.loginCredentials == null ||
+        this.loginCredentials?.email?.length <= 0 ||
+        this.loginCredentials?.password?.length <= 0
+      ) {
+        this.toatrService.error('Wrongs credentials');
+        return;
+      }
+      this.userService.signIn(this.loginCredentials).subscribe(response => {
+        if (!response) {
+          this.toatrService.error('Something went wrong');
+        }
+      });
     });
   }
 
@@ -48,11 +58,19 @@ export class NavbarComponent {
 
     dialogRef.afterClosed().subscribe(result => {
       this.registerCredentials = result;
-      // TODO: validate credentials
-      if (typeof this.registerCredentials === 'undefined') return;
-      this.userService
-        .signUp(this.registerCredentials)
-        .subscribe(response => console.log(response));
+      if (
+        this.registerCredentials == null ||
+        this.registerCredentials?.password !==
+          this.registerCredentials?.repeatedPassword
+      ) {
+        this.toatrService.error('Wrongs credentials');
+        return;
+      }
+      this.userService.signUp(this.registerCredentials).subscribe(response => {
+        if (!response) {
+          this.toatrService.error('Something went wrong');
+        }
+      });
     });
   }
 

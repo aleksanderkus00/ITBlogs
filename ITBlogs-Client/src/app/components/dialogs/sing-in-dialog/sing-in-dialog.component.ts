@@ -16,13 +16,6 @@ export class SingInDialogComponent {
   ) {}
 
   onNoClick(): void {
-    this.dialogRef
-      .afterClosed()
-      .subscribe(res =>
-        this.userService
-          .signIn({ email: res.email, password: res.password } as LoginModel)
-          .subscribe()
-      );
     this.dialogRef.close();
   }
 }
