@@ -96,11 +96,11 @@ public class ArticleController {
     }
 
     @GetMapping("your-articles/{userId}/{pageNumber}/{pageSize}")
-        //PaginatedResult<List<Article>> getAllArticles(
-    List<ArticleDto> getYourArticles(@PathVariable Long userId, @PathVariable int pageNumber, @PathVariable int pageSize) {
+    PaginatedResult<List<ArticleDto>> getYourArticles(@PathVariable Long userId, @PathVariable int pageNumber, @PathVariable int pageSize) {
         try {
             var user = this.userRepository.findById(userId).get();
             var pageable = PageRequest.of(pageNumber, pageSize);
+            var totalCount = this.articleRepository.findAllByUser(user).size() / pageSize;
             var articles =  this.articleRepository.findAllByUser(user, pageable);
             var articleDtos = new ArrayList<ArticleDto>(articles.size());
             for(var article: articles){
@@ -108,24 +108,33 @@ public class ArticleController {
                 articleDto.setId(article.getId());
                 articleDto.setTitle(article.getTitle());
                 articleDto.setCategory(article.getCategory());
-                articleDto.setContent(article.getContent()); // TODO: take only first 100 characters
+                int endIndex = Math.min(article.getContent().length(), 100);
+                articleDto.setContent(article.getContent().substring(0, endIndex));
                 articleDto.setGeneratedDate(article.getGeneratedDate());
                 articleDto.setLikes((long) article.getLikedArticles().size());
                 articleDtos.add(articleDto);
             }
-            return articleDtos;
+            var paginatedResult = new PaginatedResult<List<ArticleDto>>();
+            paginatedResult.setResult(articleDtos);
+            paginatedResult.setCurrentPage(pageNumber);
+            paginatedResult.setTotalPages(totalCount);
+            return paginatedResult;
         }
         catch (Exception ex){
             this.logger.warn("Cannot get news articles");
         }
-        return new ArrayList<>();
+        var paginatedResult = new PaginatedResult<List<ArticleDto>>();
+        paginatedResult.setResult(new ArrayList<>());
+        paginatedResult.setCurrentPage(pageNumber);
+        paginatedResult.setTotalPages(0);
+        return paginatedResult;
     }
 
     @GetMapping("/news-articles/{pageNumber}/{pageSize}")
-        //PaginatedResult<List<Article>> getAllArticles(
-    List<ArticleDto> getNewArticles(@PathVariable int pageNumber, @PathVariable int pageSize) {
+    PaginatedResult<List<ArticleDto>> getNewArticles(@PathVariable int pageNumber, @PathVariable int pageSize) {
         try {
             var pageable = PageRequest.of(pageNumber, pageSize);
+            var totalCount = this.articleRepository.findAllByCategory(1L).size() / pageSize;
             var articles =  this.articleRepository.findAllByCategory(0L,pageable);
             var articleDtos = new ArrayList<ArticleDto>(articles.size());
             for(var article: articles){
@@ -133,28 +142,47 @@ public class ArticleController {
                 articleDto.setId(article.getId());
                 articleDto.setTitle(article.getTitle());
                 articleDto.setCategory(article.getCategory());
-                articleDto.setContent(article.getContent()); // TODO: take only first 100 characters
+                int endIndex = Math.min(article.getContent().length(), 100);
+                articleDto.setContent(article.getContent().substring(0, endIndex));
                 articleDto.setGeneratedDate(article.getGeneratedDate());
                 articleDto.setLikes((long) article.getLikedArticles().size());
                 articleDtos.add(articleDto);
             }
-            return articleDtos;
+            var paginatedResult = new PaginatedResult<List<ArticleDto>>();
+            paginatedResult.setResult(articleDtos);
+            paginatedResult.setCurrentPage(pageNumber);
+            paginatedResult.setTotalPages(totalCount);
+            return paginatedResult;
         }
         catch (Exception ex){
             this.logger.warn("Cannot get news articles");
         }
-        return new ArrayList<>();
+        var paginatedResult = new PaginatedResult<List<ArticleDto>>();
+        paginatedResult.setResult(new ArrayList<>());
+        paginatedResult.setCurrentPage(pageNumber);
+        paginatedResult.setTotalPages(0);
+        return paginatedResult;
     }
 
     @GetMapping("/liked/{userId}/{pageNumber}/{pageSize}")
-    List<Article> getLikedArticles(@PathVariable long userId, @PathVariable int pageNumber, @PathVariable int pageSize) {
+    PaginatedResult<List<Article>> getLikedArticles(@PathVariable long userId, @PathVariable int pageNumber, @PathVariable int pageSize) {
         try{
             var user = this.userRepository.findById(userId).get();
-            return user.getLikedArticles();
+            var totalCount = user.getLikedArticles().size();
+            var articles =  user.getLikedArticles().stream().skip(pageNumber*pageSize).limit(pageSize).collect(Collectors.toList());
+            var paginatedResult = new PaginatedResult<List<Article>>();
+            paginatedResult.setResult(articles);
+            paginatedResult.setCurrentPage(pageNumber);
+            paginatedResult.setTotalPages(totalCount);
+            return paginatedResult;
         } catch (NoSuchElementException exception) {
             this.logger.warn("Cannot get saved articles");
         }
-        return null;
+        var paginatedResult = new PaginatedResult<List<Article>>();
+        paginatedResult.setResult(new ArrayList<>());
+        paginatedResult.setCurrentPage(pageNumber);
+        paginatedResult.setTotalPages(0);
+        return paginatedResult;
     }
 
     @GetMapping("/userLikes/{userId}")
@@ -208,14 +236,25 @@ public class ArticleController {
     }
 
     @GetMapping("/saved/{userId}/{pageNumber}/{pageSize}")
-    List<Article> getSavedArticles(@PathVariable long userId, @PathVariable int pageNumber, @PathVariable int pageSize) {
+    PaginatedResult<List<Article>> getSavedArticles(@PathVariable long userId, @PathVariable int pageNumber, @PathVariable int pageSize) {
         try{
             var user = this.userRepository.findById(userId).get();
-            return user.getSavedArticles();
+            var totalCount = user.getSavedArticles().size();
+            var articles =  user.getSavedArticles().stream().skip(pageNumber*pageSize).limit(pageSize).collect(Collectors.toList());
+            var paginatedResult = new PaginatedResult<List<Article>>();
+            paginatedResult.setResult(articles);
+            paginatedResult.setCurrentPage(pageNumber);
+            paginatedResult.setTotalPages(totalCount);
+            return paginatedResult;
+
         } catch (NoSuchElementException exception) {
             this.logger.warn("Cannot get saved articles");
         }
-        return null;
+        var paginatedResult = new PaginatedResult<List<Article>>();
+        paginatedResult.setResult(new ArrayList<>());
+        paginatedResult.setCurrentPage(pageNumber);
+        paginatedResult.setTotalPages(0);
+        return paginatedResult;
     }
 
     @PutMapping("/save/{userId}/{articleId}")

@@ -20,7 +20,7 @@ export class ArticleService {
 
   public getAllArticles(
     pageNumber = 0,
-    pageSize = 10 // TODO: set back to 100
+    pageSize = 10
   ): Observable<PaginatedResult<Article[]>> {
     return this.http.get<PaginatedResult<Article[]>>(
       `${this.env.apiUrl}/article/all-articles/${pageNumber}/${pageSize}`
@@ -29,19 +29,19 @@ export class ArticleService {
 
   public getYourArticles(
     pageNumber = 0,
-    pageSize = 100
-  ): Observable<Article[]> {
+    pageSize = 10
+  ): Observable<PaginatedResult<Article[]>> {
     const userId = this.userService.getUserId();
-    return this.http.get<Article[]>(
+    return this.http.get<PaginatedResult<Article[]>>(
       `${this.env.apiUrl}/article/your-articles/${userId}/${pageNumber}/${pageSize}`
     );
   }
 
   public getNewsArticles(
     pageNumber = 0,
-    pageSize = 100
-  ): Observable<Article[]> {
-    return this.http.get<Article[]>(
+    pageSize = 10
+  ): Observable<PaginatedResult<Article[]>> {
+    return this.http.get<PaginatedResult<Article[]>>(
       `${this.env.apiUrl}/article/news-articles/${pageNumber}/${pageSize}`
     );
   }
@@ -97,9 +97,9 @@ export class ArticleService {
   public getSavedArticles(
     userId: number,
     pageNumber = 0,
-    pageSize = 100
-  ): Observable<Article[]> {
-    return this.http.get<Article[]>(
+    pageSize = 10
+  ): Observable<PaginatedResult<Article[]>> {
+    return this.http.get<PaginatedResult<Article[]>>(
       `${this.env.apiUrl}/article/saved/${userId}/${pageNumber}/${pageSize}`
     );
   }

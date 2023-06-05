@@ -10,5 +10,7 @@ import java.util.List;
 
 public interface ArticleRepository extends JpaRepository<Article, Long> {
     List<Article> findAllByCategory(Long category, PageRequest pagination);
+    List<Article> findAllByCategory(Long category);
     List<Article> findAllByUser(User user, PageRequest pagination);
+    List<Article> findAllByUser(User user);
 }
