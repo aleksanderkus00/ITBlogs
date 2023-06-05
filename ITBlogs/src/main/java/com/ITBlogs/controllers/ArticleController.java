@@ -35,7 +35,7 @@ public class ArticleController {
             article.setUser(user);
             article.setGeneratedDate(LocalDateTime.now());
             article.setDeleted(false);
-            article.setCategory(1L); //test only
+            article.setCategory(article.getCategory());
             this.articleRepository.save(article);
             return true;
         } catch (Exception exception) {
