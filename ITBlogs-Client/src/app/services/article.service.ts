@@ -4,6 +4,7 @@ import { Observable, of } from 'rxjs';
 import { Article } from '../models/article.model';
 import { environment } from 'src/environments/environment';
 import { UserService } from './user.service';
+import { PaginatedResult } from '../models/paginated-result.model';
 
 @Injectable({
   providedIn: 'root',
@@ -17,8 +18,11 @@ export class ArticleService {
     return this.http.get<Article>(`${this.env.apiUrl}/article/${id}`);
   }
 
-  public getAllArticles(pageNumber = 0, pageSize = 100): Observable<Article[]> {
-    return this.http.get<Article[]>(
+  public getAllArticles(
+    pageNumber = 0,
+    pageSize = 10 // TODO: set back to 100
+  ): Observable<PaginatedResult<Article[]>> {
+    return this.http.get<PaginatedResult<Article[]>>(
       `${this.env.apiUrl}/article/all-articles/${pageNumber}/${pageSize}`
     );
   }

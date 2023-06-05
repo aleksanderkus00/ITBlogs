@@ -2,6 +2,7 @@ package com.ITBlogs.controllers;
 
 import com.ITBlogs.models.Article;
 import com.ITBlogs.models.DTO.ArticleDto;
+import com.ITBlogs.models.PaginatedResult;
 import com.ITBlogs.repository.ArticleRepository;
 import com.ITBlogs.repository.UserRepository;
 import org.slf4j.Logger;
@@ -71,8 +72,8 @@ public class ArticleController {
     }
 
     @GetMapping("/all-articles/{pageNumber}/{pageSize}")
-    //PaginatedResult<List<Article>> getAllArticles(
-    List<ArticleDto> getAllArticles(@PathVariable int pageNumber, @PathVariable int pageSize) {
+    PaginatedResult<List<ArticleDto>> getAllArticles(@PathVariable int pageNumber, @PathVariable int pageSize) {
+        int totalCount = this.articleRepository.findAll().size() / pageSize;
         var pageable = PageRequest.of(pageNumber, pageSize);
         var articles =  this.articleRepository.findAll(pageable).getContent();
         var articleDtos = new ArrayList<ArticleDto>(articles.size());
@@ -81,12 +82,17 @@ public class ArticleController {
             articleDto.setId(article.getId());
             articleDto.setTitle(article.getTitle());
             articleDto.setCategory(article.getCategory());
-            articleDto.setContent(article.getContent()); // TODO: take only first 100 characters
+            int endIndex = Math.min(article.getContent().length(), 100);
+            articleDto.setContent(article.getContent().substring(0, endIndex));
             articleDto.setGeneratedDate(article.getGeneratedDate());
             articleDto.setLikes((long) article.getLikedArticles().size());
             articleDtos.add(articleDto);
         }
-        return articleDtos;
+        var paginatedResult = new PaginatedResult<List<ArticleDto>>();
+        paginatedResult.setResult(articleDtos);
+        paginatedResult.setCurrentPage(pageNumber);
+        paginatedResult.setTotalPages(totalCount);
+        return paginatedResult;
     }
 
     @GetMapping("your-articles/{userId}/{pageNumber}/{pageSize}")
