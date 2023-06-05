@@ -109,6 +109,10 @@ export class UserService {
   }
 
   private setLikedArticlesIds(): void {
+    if (this.getUserId() === 0) {
+      this.likedArticlesIds = [];
+      return;
+    }
     this.http
       .get<number[]>(`${this.env.apiUrl}/article/userLikes/${this.getUserId()}`)
       .subscribe(res => {
@@ -117,6 +121,10 @@ export class UserService {
   }
 
   private setSavedArticlesIds(): void {
+    if (this.getUserId() === 0) {
+      this.savedArticlesIds = [];
+      return;
+    }
     this.http
       .get<number[]>(`${this.env.apiUrl}/article/userSaves/${this.getUserId()}`)
       .subscribe(res => {
