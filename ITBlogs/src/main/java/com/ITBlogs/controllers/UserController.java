@@ -5,6 +5,8 @@ import com.ITBlogs.models.User;
 import com.ITBlogs.repository.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.NoSuchElementException;
@@ -14,6 +16,9 @@ import java.util.NoSuchElementException;
 public class UserController {
     private final Logger logger = LoggerFactory.getLogger(UserController.class);
     private final UserRepository userRepository;
+
+    @Autowired
+    PasswordEncoder encoder;
 
     public UserController(UserRepository userRepository) {
         this.userRepository = userRepository;
@@ -42,15 +47,10 @@ public class UserController {
                 user.setEmail(userSettings.getEmail());
                 changed = true;
             }
-            /*
-            // TODO: fix changing password
             if (userSettings.getPassword() != null) {
-                byte[] saltedPassword = (userSettings.getPassword() + new String(user.getPasswordSalt())).getBytes();
-                MessageDigest md = MessageDigest.getInstance("SHA-256");
-                user.setPasswordHash(md.digest(saltedPassword));
+                user.setPassword(encoder.encode(userSettings.getPassword()));
                 changed = true;
             }
-             */
             if (changed) this.userRepository.save(user);
             return true;
         } catch (Exception exception){
