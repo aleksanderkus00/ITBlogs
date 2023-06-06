@@ -35,7 +35,7 @@ export class YourArticlesComponent implements AfterViewInit {
   private fetchDate(currIndex: number) {
     if (this.currentPage <= this.totalPages) {
       this.articleService
-        .getAllArticles(currIndex)
+        .getYourArticles(currIndex)
         .subscribe((data: PaginatedResult<Article[]>) => {
           this.articles.next([...this.articles.value, ...data.result]);
           this.currentPage++;

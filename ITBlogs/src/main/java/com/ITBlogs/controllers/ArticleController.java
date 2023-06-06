@@ -82,7 +82,7 @@ public class ArticleController {
             articleDto.setId(article.getId());
             articleDto.setTitle(article.getTitle());
             articleDto.setCategory(article.getCategory());
-            int endIndex = Math.min(article.getContent().length(), 100);
+            int endIndex = Math.min(article.getContent().length(), 300);
             articleDto.setContent(article.getContent().substring(0, endIndex));
             articleDto.setGeneratedDate(article.getGeneratedDate());
             articleDto.setLikes((long) article.getLikedArticles().size());
@@ -108,7 +108,7 @@ public class ArticleController {
                 articleDto.setId(article.getId());
                 articleDto.setTitle(article.getTitle());
                 articleDto.setCategory(article.getCategory());
-                int endIndex = Math.min(article.getContent().length(), 100);
+                int endIndex = Math.min(article.getContent().length(), 300);
                 articleDto.setContent(article.getContent().substring(0, endIndex));
                 articleDto.setGeneratedDate(article.getGeneratedDate());
                 articleDto.setLikes((long) article.getLikedArticles().size());
@@ -142,7 +142,7 @@ public class ArticleController {
                 articleDto.setId(article.getId());
                 articleDto.setTitle(article.getTitle());
                 articleDto.setCategory(article.getCategory());
-                int endIndex = Math.min(article.getContent().length(), 100);
+                int endIndex = Math.min(article.getContent().length(), 300);
                 articleDto.setContent(article.getContent().substring(0, endIndex));
                 articleDto.setGeneratedDate(article.getGeneratedDate());
                 articleDto.setLikes((long) article.getLikedArticles().size());
